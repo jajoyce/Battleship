@@ -1,0 +1,113 @@
+body {
+    background-color: #224;
+    color: #aab;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+header {
+    text-align: center;
+}
+
+.main-game-section {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.enemy, .player {
+    text-align: center;
+}
+
+.outer-board-grid-container {
+    display: grid;
+    grid-template-columns: repeat(10, 1fr) 20px;
+    grid-template-rows: repeat(10, 1fr) 20px; 
+    width: 400px;
+    height: 400px;
+}
+
+.inner-board-grid-container {
+    grid-column: 1 / span 10;
+    grid-row: 1 / span 10;
+    display: grid;
+    grid-template-columns: repeat(10, 10%); 
+    grid-template-rows: repeat(10, 10%); 
+    /* background-color: #88b; */
+    color: #00f;
+    font-size: 28px;
+}
+
+.grid-y-axis {
+    grid-area: 1 / 11 / 11 / 12;
+    display: grid;
+    grid-template-columns: 1fr; 
+    grid-template-rows: repeat(10, 10%); 
+    justify-items: center;
+    align-items: center;
+}
+
+.grid-x-axis {
+    grid-area: 11 / 1 / 12 / 11;
+    display: grid;
+    grid-template-columns: repeat(10, 10%); 
+    grid-template-rows: 1fr; 
+    justify-items: center;
+    align-items: center;
+}
+
+.cell {
+    background-color: #88b;
+    border: 1px solid #112;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.cell:hover {
+    background-color: #aab;
+}
+
+.middle-message-box {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    width: 200px;
+    text-align: center;
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.below-gameboard {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    margin: 60px auto;
+}
+
+.key {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0 40px;
+}
+
+.key h3 {
+    margin-right: 40px;
+}
+
+.key p {
+    margin: 0 25px;
+    font-weight: bold;
+}
+
+#restart {
+    padding: 10px 20px;
+    margin: 0 40px;
+    border: 4px solid #aab;
+    background-color: #347;
+    border-radius: 14px;
+    color: #aab;
+    font-size: 24px;
+    text-align: center;
+    font-weight: bold;
+    cursor: pointer;
+}
+

@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Battleship</title>
+    <link rel="stylesheet" href="styles/main.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script src="scripts/app.js" defer></script>
+</head>
+<body>
+    <header>
+        <h1>BATTLESHIP</h1>
+        <h4>Take your best shot!</h4>
+    </header>
+    <main>
+        <section class="main-game-section">
+            <div class="enemy">
+                <h3>Enemy Fleet:</h3>
+                <div class="outer-board-grid-container">
+                    <div class="inner-board-grid-container">
+                        <div class="enemy-cell cell"></div>
+                        <div class="enemy-cell cell"></div>
+                        <div class="enemy-cell cell"></div>
+                        <div class="enemy-cell cell"></div>
+                        <div class="enemy-cell cell"></div>
+                        <div class="enemy-cell cell"></div>
+                        <div class="enemy-cell cell"></div>
+                        <div class="enemy-cell cell"></div>
+                        <div class="enemy-cell cell"></div>
+                        <div class="enemy-cell cell"></div>
+                        <div class="enemy-cell cell"></div>
+                        <div class="enemy-cell cell"></div>
+                        <div class="enemy-cell cell"></div>
+                        <div class="enemy-cell cell"></div>
+                        <div class="enemy-cell cell"></div>
+                        <div class="enemy-cell cell"></div>
+                        <div class="enemy-cell cell"></div>
+                        <div class="enemy-cell cell"></div>
+                        <div class="enemy-cell cell"></div>
+                        <div class="enemy-cell cell"></div>
+                        <div class="enemy-cell cell"></div>
+                        <div class="enemy-cell cell"></div>
+                        <div class="enemy-cell cell"></div>
+                        <div class="enemy-cell cell"></div>
+                        <div class="enemy-cell cell"></div>
+                        <div class="enemy-cell cell"></div>
+                        <div class="enemy-cell cell"></div>
+                        <div class="enemy-cell cell"></div>
+                        <div class="enemy-cell cell"></div>
+                        <div class="enemy-cell cell"></div>
+                        <div class="enemy-cell cell"></div>
+                        <div class="enemy-cell cell"></div>
+                        <div class="enemy-cell cell"></div>
+                        <div class="enemy-cell cell"></div>
+                        <div class="enemy-cell cell"></div>
+                        <div class="enemy-cell cell"></div>
+                        <div class="enemy-cell cell"></div>
+                        <div class="enemy-cell cell"></div>
+                        <div class="enemy-cell cell"></div>
+                        <div class="enemy-cell cell"></div>
+                        <div class="enemy-cell cell"></div>
+                        <div class="enemy-cell cell"></div>
+                        <div class="enemy-cell cell"></div>
+                        <div class="enemy-cell cell"></div>
+                        <div class="enemy-cell cell"></div>
+                        <div class="enemy-cell cell"></div>
+                        <div class="enemy-cell cell"></div>
+                        <div class="enemy-cell cell"></div>
+                        <div class="enemy-cell cell"></div>
+                        <div class="enemy-cell cell"></div>
+                        <div class="enemy-cell cell"></div>
+                        <div class="enemy-cell cell"></div>
+                        <div class="enemy-cell cell"></div>
+                        <div class="enemy-cell cell"></div>
+                        <div class="enemy-cell cell"></div>
+                        <div class="enemy-cell cell"></div>
+                        <div class="enemy-cell cell"></div>
+                        <div class="enemy-cell cell"></div>
+                        <div class="enemy-cell cell"></div>
+                        <div class="enemy-cell cell"></div>
+                        <div class="enemy-cell cell"></div>
+                        <div class="enemy-cell cell"></div>
+                        <div class="enemy-cell cell"></div>
+                        <div class="enemy-cell cell"></div>
+                        <div class="enemy-cell cell"></div>
+                        <div class="enemy-cell cell"></div>
+                        <div class="enemy-cell cell"></div>
+                        <div class="enemy-cell cell"></div>
+                        <div class="enemy-cell cell"></div>
+                        <div class="enemy-cell cell"></div>
+                        <div class="enemy-cell cell"></div>
+                        <div class="enemy-cell cell"></div>
+                        <div class="enemy-cell cell"></div>
+                        <div class="enemy-cell cell"></div>
+                        <div class="enemy-cell cell"></div>
+                        <div class="enemy-cell cell"></div>
+                        <div class="enemy-cell cell"></div>
+                        <div class="enemy-cell cell"></div>
+                        <div class="enemy-cell cell"></div>
+                        <div class="enemy-cell cell"></div>
+                        <div class="enemy-cell cell"></div>
+                        <div class="enemy-cell cell"></div>
+                        <div class="enemy-cell cell"></div>
+                        <div class="enemy-cell cell"></div>
+                        <div class="enemy-cell cell"></div>
+                        <div class="enemy-cell cell"></div>
+                        <div class="enemy-cell cell"></div>
+                        <div class="enemy-cell cell"></div>
+                        <div class="enemy-cell cell"></div>
+                        <div class="enemy-cell cell"></div>
+                        <div class="enemy-cell cell"></div>
+                        <div class="enemy-cell cell"></div>
+                        <div class="enemy-cell cell"></div>
+                        <div class="enemy-cell cell"></div>
+                        <div class="enemy-cell cell"></div>
+                        <div class="enemy-cell cell"></div>
+                        <div class="enemy-cell cell"></div>
+                        <div class="enemy-cell cell"></div>
+                        <div class="enemy-cell cell"></div>
+                        <div class="enemy-cell cell"></div>
+                    </div>
+                    <div class="grid-y-axis">
+                        <div>A</div>
+                        <div>B</div>
+                        <div>C</div>
+                        <div>D</div>
+                        <div>E</div>
+                        <div>F</div>
+                        <div>G</div>
+                        <div>H</div>
+                        <div>I</div>
+                        <div>J</div>
+                    </div>
+                    <div class="grid-x-axis">
+                        <div>1</div>
+                        <div>2</div>
+                        <div>3</div>
+                        <div>4</div>
+                        <div>5</div>
+                        <div>6</div>
+                        <div>7</div>
+                        <div>8</div>
+                        <div>9</div>
+                        <div>10</div>
+                    </div>
+                </div>
+            </div>
+            <div class="middle-message-box">
+                <div id="message-1">You're up first!</div>
+                <div id="message-2">Select a square to fire on the enemy fleet!</div>
+            </div>
+            <div class="player">
+                <h3>Your Fleet:</h3>
+                <div class="outer-board-grid-container">
+                    <div class="inner-board-grid-container">
+                        <div class="player-cell cell"></div>
+                        <div class="player-cell cell"></div>
+                        <div class="player-cell cell"></div>
+                        <div class="player-cell cell"></div>
+                        <div class="player-cell cell"></div>
+                        <div class="player-cell cell"></div>
+                        <div class="player-cell cell"></div>
+                        <div class="player-cell cell"></div>
+                        <div class="player-cell cell"></div>
+                        <div class="player-cell cell"></div>
+                        <div class="player-cell cell"></div>
+                        <div class="player-cell cell"></div>
+                        <div class="player-cell cell"></div>
+                        <div class="player-cell cell"></div>
+                        <div class="player-cell cell"></div>
+                        <div class="player-cell cell"></div>
+                        <div class="player-cell cell"></div>
+                        <div class="player-cell cell"></div>
+                        <div class="player-cell cell"></div>
+                        <div class="player-cell cell"></div>
+                        <div class="player-cell cell"></div>
+                        <div class="player-cell cell"></div>
+                        <div class="player-cell cell"></div>
+                        <div class="player-cell cell"></div>
+                        <div class="player-cell cell"></div>
+                        <div class="player-cell cell"></div>
+                        <div class="player-cell cell"></div>
+                        <div class="player-cell cell"></div>
+                        <div class="player-cell cell"></div>
+                        <div class="player-cell cell"></div>
+                        <div class="player-cell cell"></div>
+                        <div class="player-cell cell"></div>
+                        <div class="player-cell cell"></div>
+                        <div class="player-cell cell"></div>
+                        <div class="player-cell cell"></div>
+                        <div class="player-cell cell"></div>
+                        <div class="player-cell cell"></div>
+                        <div class="player-cell cell"></div>
+                        <div class="player-cell cell"></div>
+                        <div class="player-cell cell"></div>
+                        <div class="player-cell cell"></div>
+                        <div class="player-cell cell"></div>
+                        <div class="player-cell cell"></div>
+                        <div class="player-cell cell"></div>
+                        <div class="player-cell cell"></div>
+                        <div class="player-cell cell"></div>
+                        <div class="player-cell cell"></div>
+                        <div class="player-cell cell"></div>
+                        <div class="player-cell cell"></div>
+                        <div class="player-cell cell"></div>
+                        <div class="player-cell cell"></div>
+                        <div class="player-cell cell"></div>
+                        <div class="player-cell cell"></div>
+                        <div class="player-cell cell"></div>
+                        <div class="player-cell cell"></div>
+                        <div class="player-cell cell"></div>
+                        <div class="player-cell cell"></div>
+                        <div class="player-cell cell"></div>
+                        <div class="player-cell cell"></div>
+                        <div class="player-cell cell"></div>
+                        <div class="player-cell cell"></div>
+                        <div class="player-cell cell"></div>
+                        <div class="player-cell cell"></div>
+                        <div class="player-cell cell"></div>
+                        <div class="player-cell cell"></div>
+                        <div class="player-cell cell"></div>
+                        <div class="player-cell cell"></div>
+                        <div class="player-cell cell"></div>
+                        <div class="player-cell cell"></div>
+                        <div class="player-cell cell"></div>
+                        <div class="player-cell cell"></div>
+                        <div class="player-cell cell"></div>
+                        <div class="player-cell cell"></div>
+                        <div class="player-cell cell"></div>
+                        <div class="player-cell cell"></div>
+                        <div class="player-cell cell"></div>
+                        <div class="player-cell cell"></div>
+                        <div class="player-cell cell"></div>
+                        <div class="player-cell cell"></div>
+                        <div class="player-cell cell"></div>
+                        <div class="player-cell cell"></div>
+                        <div class="player-cell cell"></div>
+                        <div class="player-cell cell"></div>
+                        <div class="player-cell cell"></div>
+                        <div class="player-cell cell"></div>
+                        <div class="player-cell cell"></div>
+                        <div class="player-cell cell"></div>
+                        <div class="player-cell cell"></div>
+                        <div class="player-cell cell"></div>
+                        <div class="player-cell cell"></div>
+                        <div class="player-cell cell"></div>
+                        <div class="player-cell cell"></div>
+                        <div class="player-cell cell"></div>
+                        <div class="player-cell cell"></div>
+                        <div class="player-cell cell"></div>
+                        <div class="player-cell cell"></div>
+                        <div class="player-cell cell"></div>
+                        <div class="player-cell cell"></div>
+                        <div class="player-cell cell"></div>
+                        <div class="player-cell cell"></div>
+                    </div>
+                    <div class="grid-y-axis">
+                        <div>A</div>
+                        <div>B</div>
+                        <div>C</div>
+                        <div>D</div>
+                        <div>E</div>
+                        <div>F</div>
+                        <div>G</div>
+                        <div>H</div>
+                        <div>I</div>
+                        <div>J</div>
+                    </div>
+                    <div class="grid-x-axis">
+                        <div>1</div>
+                        <div>2</div>
+                        <div>3</div>
+                        <div>4</div>
+                        <div>5</div>
+                        <div>6</div>
+                        <div>7</div>
+                        <div>8</div>
+                        <div>9</div>
+                        <div>10</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="below-gameboard">
+            <div class="key">
+                <h3>Fleet Key:</h3>
+                <p>Aircraft Carrier: <br> 5 squares</p>
+                <p>Battleship: <br> 4 squares</p>
+                <p>Destroyer: <br> 3 squares</p>
+                <p>Submarine: <br> 3 squares</p>
+                <p>Patrol Boat: <br> 2 squares</p>
+            </div>
+            <div id="restart">New Game</div>
+        </section>
+    </main>
+    
+</body>
+</html>
