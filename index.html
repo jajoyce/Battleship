@@ -12,11 +12,10 @@
 <body>
     <header>
         <h1>BATTLESHIP</h1>
-        <h4>Take your best shot!</h4>
     </header>
     <main>
         <section class="main-game-section">
-            <div class="player">
+            <div class="player-container">
                 <h3>Your Fleet:</h3>
                 <div class="outer-board-grid-container">
                     <div class="inner-board-grid-container">
@@ -150,8 +149,9 @@
             <div class="middle-message-box">
                 <div id="message-1">You're up first!</div>
                 <div id="message-2">Select a square to fire on the enemy fleet!</div>
+                <div id="message-3"></div>
             </div>
-            <div class="enemy">
+            <div class="enemy-container">
                 <h3>Enemy Fleet:</h3>
                 <div class="outer-board-grid-container">
                     <div class="inner-board-grid-container">
@@ -284,17 +284,24 @@
             </div>
         </section>
         <section class="below-gameboard">
-            <div class="key">
-                <h3>Fleet Key:</h3>
-                <p>Aircraft Carrier: <br> 5 squares</p>
-                <p>Battleship: <br> 4 squares</p>
-                <p>Destroyer: <br> 3 squares</p>
-                <p>Submarine: <br> 3 squares</p>
-                <p>Patrol Boat: <br> 2 squares</p>
+            <div class="player-ships">
+                <div class="key">Your Ships Remaining [ship's length]:</div>
+                <div class="carrier">Aircraft Carrier [5]</div>
+                <div class="battleship">Battleship [4]</div>
+                <div class="destroyer">Destroyer [3]</div>
+                <div class="submarine">Submarine [3]</div>
+                <div class="patrol">Patrol Boat [2]</div>
             </div>
             <div id="restart">New Game</div>
+            <div class="enemy-ships">
+                <div class="key">Enemy Ships Remaining [ship's length]:</div>
+                <div class="carrier">Aircraft Carrier [5]</div>
+                <div class="battleship">Battleship [4]</div>
+                <div class="destroyer">Destroyer [3]</div>
+                <div class="submarine">Submarine [3]</div>
+                <div class="patrol">Patrol Boat [2]</div>
+            </div>
         </section>
     </main>
-    
 </body>
 </html>

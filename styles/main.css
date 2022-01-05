@@ -8,12 +8,16 @@ header {
     text-align: center;
 }
 
+h1 {
+    font-size: 50px;
+}
+
 .main-game-section {
     display: flex;
     justify-content: space-evenly;
 }
 
-.enemy, .player {
+.player-container, .enemy-container {
     text-align: center;
 }
 
@@ -69,7 +73,7 @@ header {
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
-    width: 200px;
+    width: 220px;
     text-align: center;
     font-size: 22px;
     font-weight: bold;
@@ -79,23 +83,29 @@ header {
     display: flex;
     justify-content: space-evenly;
     align-items: center;
-    margin: 60px auto;
+    margin: 50px auto;
+}
+
+.player-ships, .enemy-ships {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-evenly;
+    width: 440px;
+    font-size: 18px;
+    text-align: center;
+}
+
+.player-ships > *, .enemy-ships > * {
+    padding: 5px;
 }
 
 .key {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin: 0 40px;
-}
-
-.key h3 {
-    margin-right: 40px;
-}
-
-.key p {
-    margin: 0 25px;
+    flex: 1 0 90%;
     font-weight: bold;
+}
+
+.carrier, .battleship {
+    flex: 1 0 45%;
 }
 
 #restart {
