@@ -1,5 +1,7 @@
 const $playerCells = $('.player-cell');
 const $enemyCells = $('.enemy-cell');
+const $playerShipsKey = $('.player-ships');
+const $enemyShipsKey = $('.enemy-ships');
 const $message1 = $('#message-1');
 const $message2 = $('#message-2');
 const $message3 = $('#message-3');
@@ -7,8 +9,8 @@ const $restart = $('#restart');
 
 let gameOver = false;
 let sides = [
-    {name: "Player", shipsLeft: 5}, 
-    {name: "Enemy", shipsLeft: 5}
+    {name: "Player", shipsLeft: 5, shipsKey: $playerShipsKey}, 
+    {name: "Enemy", shipsLeft: 5, shipsKey: $enemyShipsKey}
 ];
 let playerCells = $playerCells;
 let enemyCells = $enemyCells;
@@ -55,7 +57,9 @@ addXYCoordinates(playerCells);
 $enemyCells.on('click', enemyCellClick);
 
 // Placeholder for demo
-$playerCells.on('click', enemyCellClick)
+$playerCells.on('click', enemyCellClick);
+
+$restart.on('click', () => location.reload());
 
 function enemyCellClick() {
     if (!gameOver) {
@@ -70,11 +74,11 @@ function enemyCellClick() {
             $message1.css({fontSize: '26px'});
             if (this.occupied) {
                 $(this).text('X');
-                $(this).css({color: '#b44', backgroundColor: '#222'});
+                $(this).css({color: '#922', backgroundColor: '#222'});
                 $message2.text('HIT!');
-                $message2.css({fontSize: '60px', color: '#b44'});
+                $message2.css({fontSize: '60px', color: '#922'});
                 this.shipHere.takeHit();
-                console.log(`hit ${this.shipHere.name}`);
+                console.log(`hit ${this.shipHere.className}`);
             } else {
                 $(this).text('/');
                 $(this).css({backgroundColor: '#aaf'});
@@ -88,9 +92,10 @@ function enemyCellClick() {
 }
 
 class Ship {
-    constructor(side, name, cellLength, direction, cellsOccupied) {
+    constructor(side, className, displayName, cellLength, direction, cellsOccupied) {
         this.side = side;
-        this.name = name;
+        this.className = className;
+        this.displayName = displayName;
         this.cellLength = cellLength;
         this.direction = direction;
         this.cellsOccupied = cellsOccupied;
@@ -114,15 +119,16 @@ class Ship {
     takeHit() {
         this.hitsTaken++;
         this.checkSunk();
-        console.log(`${this.name} takes hit, has taken ${this.hitsTaken} hits total.`);
+        console.log(`${this.className} takes hit, has taken ${this.hitsTaken} hits total.`);
     }
     checkSunk() {
         if (this.hitsTaken === this.cellLength) {
             this.sunk = true;
             sides[this.side].shipsLeft--;
             $message3.css({fontSize: '26px'});
-            $message3.text(`You sank the enemy's ${this.name}!`);
-            console.log(`SANK ${this.name}`);
+            $message3.text(`You sank the enemy's ${this.displayName}!`);
+            renderSunkShipKey(this);
+            console.log(`SANK ${this.className}`);
             if (!sides[this.side].shipsLeft) {
                 gameOver = true;
                 $message1.css({fontSize: "30px"});
@@ -133,19 +139,23 @@ class Ship {
     }
 }
 
+function renderSunkShipKey(ship) {
+    sides[ship.side].shipsKey.find(`.${ship.className}`).css({textDecoration: "line-through", color: "#511"});
+}
+
 // Placeholder simple static ships for now
 
-let playerCarrier = new Ship (0, 'Aircraft Carrier', 5, 'vertical', [28, 38, 48, 58, 68]);
-let playerBattleship = new Ship (0, 'Battleship', 4, 'horizontal', [81, 82, 83, 84]);
-let playerDestroyer = new Ship (0, 'Destroyer', 3, 'vertical', [32, 42, 52]);
-let playerSubmarine = new Ship (0, 'Submarine', 3, 'horizontal', [13, 14, 15]);
-let playerPatrol = new Ship (0, 'Patrol Boat', 2, 'horizontal', [55, 56]);
+let playerCarrier = new Ship (0, 'carrier', 'Aircraft Carrier', 5, 'vertical', [28, 38, 48, 58, 68]);
+let playerBattleship = new Ship (0, 'battleship', 'Battleship', 4, 'horizontal', [81, 82, 83, 84]);
+let playerDestroyer = new Ship (0, 'destroyer', 'Destroyer', 3, 'vertical', [32, 42, 52]);
+let playerSubmarine = new Ship (0, 'submarine', 'Submarine', 3, 'horizontal', [13, 14, 15]);
+let playerPatrol = new Ship (0, 'patrol', 'Patrol Boat', 2, 'horizontal', [55, 56]);
 
-let enemyCarrier = new Ship (1, 'Aircraft Carrier', 5, 'vertical', [28, 38, 48, 58, 68]);
-let enemyBattleship = new Ship (1, 'Battleship', 4, 'horizontal', [81, 82, 83, 84]);
-let enemyDestroyer = new Ship (1, 'Destroyer', 3, 'vertical', [32, 42, 52]);
-let enemySubmarine = new Ship (1, 'Submarine', 3, 'horizontal', [13, 14, 15]);
-let enemyPatrol = new Ship (1, 'Patrol Boat', 2, 'horizontal', [55, 56]);
+let enemyCarrier = new Ship (1, 'carrier', 'Aircraft Carrier', 5, 'vertical', [28, 38, 48, 58, 68]);
+let enemyBattleship = new Ship (1, 'battleship', 'Battleship', 4, 'horizontal', [81, 82, 83, 84]);
+let enemyDestroyer = new Ship (1, 'destroyer', 'Destroyer', 3, 'vertical', [32, 42, 52]);
+let enemySubmarine = new Ship (1, 'submarine', 'Submarine', 3, 'horizontal', [13, 14, 15]);
+let enemyPatrol = new Ship (1, 'patrol', 'Patrol Boat', 2, 'horizontal', [55, 56]);
 
 playerCarrier.placeOnBoard();
 enemyCarrier.placeOnBoard();

@@ -10,6 +10,7 @@ header {
 
 h1 {
     font-size: 50px;
+    margin: 25px auto;
 }
 
 .main-game-section {
@@ -19,6 +20,11 @@ h1 {
 
 .player-container, .enemy-container {
     text-align: center;
+}
+
+.fleet-title {
+    font-size: 22px;
+    margin: 16px auto;
 }
 
 .outer-board-grid-container {
@@ -119,10 +125,12 @@ h1 {
     display: flex;
     flex-flow: row wrap;
     justify-content: center;
-    font-size: 18px;
+    font-size: 16px;
     text-align: center;
     border: 5px solid #aab;
     border-radius: 14px;
+    padding: 5px;
+    margin: 0 10px;
     max-width: 400px;
 }
 
@@ -143,9 +151,9 @@ h1 {
 }
 
 #restart {
-    min-width: fit-content;
+    /* min-width: fit-content; */
     padding: 10px 20px;
-    margin: 0 40px;
+    margin: 0 10px;
     border: 5px solid #aab;
     background-color: #347;
     border-radius: 14px;
