@@ -6,11 +6,15 @@ body {
 
 header {
     text-align: center;
+    background: radial-gradient(ellipse farthest-side at bottom, rgba(0, 0, 0, 1), rgba(0, 0, 40, 0));
 }
 
 h1 {
     font-size: 50px;
-    margin: 25px auto;
+    margin: 15px auto;
+    padding-bottom: 10px;
+    color: #aab9;
+    transform: perspective(100px) rotateX(15deg) scaleX(1.2) translateY(5px);
 }
 
 .main-game-section {
