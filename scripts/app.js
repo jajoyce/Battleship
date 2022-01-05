@@ -147,9 +147,6 @@ let enemyDestroyer = new Ship (1, 'Destroyer', 3, 'vertical', [32, 42, 52]);
 let enemySubmarine = new Ship (1, 'Submarine', 3, 'horizontal', [13, 14, 15]);
 let enemyPatrol = new Ship (1, 'Patrol Boat', 2, 'horizontal', [55, 56]);
 
-// console.log(carrier);
-
-
 playerCarrier.placeOnBoard();
 enemyCarrier.placeOnBoard();
 playerBattleship.placeOnBoard();

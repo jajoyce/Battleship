@@ -29,24 +29,29 @@ h1 {
     height: 400px;
 }
 
+.player-container .outer-board-grid-container {
+    grid-template-columns: 20px repeat(10, 1fr);
+}
+
+.enemy-container .outer-board-grid-container {
+    grid-template-columns: repeat(10, 1fr) 20px;
+}
+
 .inner-board-grid-container {
-    grid-column: 1 / span 10;
     grid-row: 1 / span 10;
     display: grid;
     grid-template-columns: repeat(10, 10%); 
     grid-template-rows: repeat(10, 10%); 
-    /* background-color: #88b; */
     color: #00f;
     font-size: 28px;
 }
 
-.grid-y-axis {
-    grid-area: 1 / 11 / 11 / 12;
-    display: grid;
-    grid-template-columns: 1fr; 
-    grid-template-rows: repeat(10, 10%); 
-    justify-items: center;
-    align-items: center;
+.player-container .inner-board-grid-container {
+    grid-column: 2 / span 10;
+}
+
+.enemy-container .inner-board-grid-container {
+    grid-column: 1 / span 10;
 }
 
 .grid-x-axis {
@@ -56,6 +61,30 @@ h1 {
     grid-template-rows: 1fr; 
     justify-items: center;
     align-items: center;
+}
+
+.player-container .grid-x-axis {
+    grid-area: 11 / 2 / 12 / 12;
+}
+
+.enemy-container .grid-x-axis {
+    grid-area: 11 / 1 / 12 / 11;
+}
+
+.grid-y-axis {
+    display: grid;
+    grid-template-columns: 1fr; 
+    grid-template-rows: repeat(10, 10%); 
+    justify-items: center;
+    align-items: center;
+}
+
+.player-container .grid-y-axis {
+    grid-area: 1 / 1 / 11 / 2;
+}
+
+.enemy-container .grid-y-axis {
+    grid-area: 1 / 11 / 11 / 12;
 }
 
 .cell {
@@ -83,16 +112,18 @@ h1 {
     display: flex;
     justify-content: space-evenly;
     align-items: center;
-    margin: 50px auto;
+    margin: 40px auto;
 }
 
 .player-ships, .enemy-ships {
     display: flex;
     flex-flow: row wrap;
-    justify-content: space-evenly;
-    width: 440px;
+    justify-content: center;
     font-size: 18px;
     text-align: center;
+    border: 5px solid #aab;
+    border-radius: 14px;
+    max-width: 400px;
 }
 
 .player-ships > *, .enemy-ships > * {
@@ -101,17 +132,21 @@ h1 {
 
 .key {
     flex: 1 0 90%;
-    font-weight: bold;
 }
 
-.carrier, .battleship {
-    flex: 1 0 45%;
+.carrier {
+    flex: 1 0 90%;
+}
+
+.battleship, .destroyer, .submarine, .patrol {
+    flex-basis: 35%;
 }
 
 #restart {
+    min-width: fit-content;
     padding: 10px 20px;
     margin: 0 40px;
-    border: 4px solid #aab;
+    border: 5px solid #aab;
     background-color: #347;
     border-radius: 14px;
     color: #aab;
