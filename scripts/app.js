@@ -8,12 +8,15 @@ const $message3 = $('#message-3');
 const $restart = $('#restart');
 
 let gameOver = false;
+let turn = 0;
 let sides = [
     {name: "Player", shipsLeft: 5, shipsKey: $playerShipsKey}, 
     {name: "Enemy", shipsLeft: 5, shipsKey: $enemyShipsKey}
 ];
-let playerCells = $playerCells;
-let enemyCells = $enemyCells;
+let enemyTimeout;
+
+// let playerCells = $playerCells;
+// let enemyCells = $enemyCells;
 
 function addXYCoordinates(cells) {
     for (let i = 0; i < cells.length; i++) {
@@ -48,21 +51,23 @@ function addXYCoordinates(cells) {
             cells[i].y = 'J';
             cells[i].x = `${i-89}`;
         }
+        cells[i].yx = `${cells[i].y}${cells[i].x}`;
+        cells[i].ySpaceX = `${cells[i].y} ${cells[i].x}`;
     }
 }
 
-addXYCoordinates(enemyCells);
-addXYCoordinates(playerCells);
+addXYCoordinates($enemyCells);
+addXYCoordinates($playerCells);
 
-$enemyCells.on('click', enemyCellClick);
+$enemyCells.on('click', playerClickFire);
 
-// Placeholder for demo
-$playerCells.on('click', enemyCellClick);
+// Placeholder for demo and testing
+$playerCells.on('click', enemyClickFire);
 
 $restart.on('click', () => location.reload());
 
-function enemyCellClick() {
-    if (!gameOver) {
+function playerClickFire() {
+    if (!gameOver && turn % 2 === 0) {
         if (this.shotAt) {
             $message1.removeAttr('style');
             $message1.text("Select a an open square!");
@@ -70,7 +75,8 @@ function enemyCellClick() {
             $message2.text("You can't fire at the same square twice.");
         } else {
             this.shotAt = true;
-            $message1.text(`Firing at ${this.y}${this.x}...`);
+            turn++;
+            $message1.text(`Firing at ${this.yx}...`);
             $message1.css({fontSize: '26px'});
             if (this.occupied) {
                 $(this).text('X');
@@ -87,7 +93,54 @@ function enemyCellClick() {
                 console.log('miss');
             }
         }
-        console.log(`Cell coordinates: ${this.y} ${this.x}`);
+        console.log(`Cell coordinates: ${this.ySpaceX}`);
+        enemyTimeout = setTimeout(enemyTimeFire, 2000);
+    }
+}
+
+function enemyClickFire() {
+    clearTimeout(enemyTimeout);
+    if (!gameOver && turn % 2) {
+        if (this.shotAt) {
+            $message1.removeAttr('style');
+            $message1.text("Select a an open square!");
+            $message2.removeAttr('style');
+            $message2.text("You can't fire at the same square twice.");
+        } else {
+            this.shotAt = true;
+            turn++;
+            $message1.text(`Enemy fires at ${this.yx}`);
+            $message1.css({fontSize: '26px'});
+            if (this.occupied) {
+                $(this).text('X');
+                $(this).css({color: '#922', backgroundColor: '#222'});
+                $message2.text('HIT!');
+                $message2.css({fontSize: '60px', color: '#922'});
+                this.shipHere.takeHit();
+                console.log(`hit ${this.shipHere.className}`);
+            } else {
+                $(this).text('/');
+                $(this).css({backgroundColor: '#aaf'});
+                $message2.text('MISS');
+                $message2.css({fontSize: '60px', color: '#88d'});
+                console.log('miss');
+            }
+        }
+        console.log(`Cell coordinates: ${this.ySpaceX}`);
+    }
+}
+
+function enemyTimeFire() {
+    if (!gameOver) {
+        let targetCellIndices = [];
+        $playerCells.each(function(index) {
+            if (!this.shotAt) {
+                targetCellIndices.push(index);
+            }
+        });
+        let randomIndex = targetCellIndices[Math.floor(Math.random() * targetCellIndices.length)];
+        $playerCells[randomIndex].click();
+        console.log(`ENEMY FIRES AT CELL ${$playerCells[randomIndex].yx}`);
     }
 }
 
@@ -101,18 +154,19 @@ class Ship {
         this.cellsOccupied = cellsOccupied;
         this.hitsTaken = 0;
         this.sunk = false;
+        this.placeOnBoard();
     }
     placeOnBoard() {
         if (this.side) {
             for (let cell of this.cellsOccupied) {
-                enemyCells[cell].occupied = true;
-                enemyCells[cell].shipHere = this;
+                $enemyCells[cell].occupied = true;
+                $enemyCells[cell].shipHere = this;
             }
         } else {
             for (let cell of this.cellsOccupied) {
-                playerCells[cell].occupied = true;
-                playerCells[cell].shipHere = this;
-                playerCells[cell].style.backgroundColor = '#333';
+                $playerCells[cell].occupied = true;
+                $playerCells[cell].shipHere = this;
+                $playerCells[cell].style.backgroundColor = '#333';
             }
         }
     }
@@ -126,14 +180,23 @@ class Ship {
             this.sunk = true;
             sides[this.side].shipsLeft--;
             $message3.css({fontSize: '26px'});
-            $message3.text(`You sank the enemy's ${this.displayName}!`);
+            if (this.side) {
+                $message3.text(`You sank the Enemy's ${this.displayName}!`);
+            } else {
+                $message3.text(`The Enemy sank your ${this.displayName}!`);
+            }
             renderSunkShipKey(this);
             console.log(`SANK ${this.className}`);
             if (!sides[this.side].shipsLeft) {
                 gameOver = true;
                 $message1.css({fontSize: "30px"});
-                $message1.text('Game Over, YOU WIN!');
-                console.log('GAME OVER, YOU WIN!');
+                if (this.side) {
+                    $message1.text('GAME OVER! YOU WIN!');
+                    console.log('GAME OVER, YOU WIN!');
+                } else {
+                    $message1.text('GAME OVER! ENEMY WINS!');
+                    console.log('GAME OVER, ENEMY WINS!');
+                }
             }
         }
     }
@@ -157,16 +220,6 @@ let enemyDestroyer = new Ship (1, 'destroyer', 'Destroyer', 3, 'vertical', [32, 
 let enemySubmarine = new Ship (1, 'submarine', 'Submarine', 3, 'horizontal', [13, 14, 15]);
 let enemyPatrol = new Ship (1, 'patrol', 'Patrol Boat', 2, 'horizontal', [55, 56]);
 
-playerCarrier.placeOnBoard();
-enemyCarrier.placeOnBoard();
-playerBattleship.placeOnBoard();
-enemyBattleship.placeOnBoard();
-playerDestroyer.placeOnBoard();
-enemyDestroyer.placeOnBoard();
-playerSubmarine.placeOnBoard();
-enemySubmarine.placeOnBoard();
-playerPatrol.placeOnBoard();
-enemyPatrol.placeOnBoard();
 
 
 
