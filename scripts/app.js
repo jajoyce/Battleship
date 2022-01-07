@@ -15,9 +15,6 @@ let sides = [
 ];
 let enemyTimeout;
 
-// let playerCells = $playerCells;
-// let enemyCells = $enemyCells;
-
 function addXYCoordinates(cells) {
     for (let i = 0; i < cells.length; i++) {
         if (i < 10) {
@@ -60,89 +57,9 @@ addXYCoordinates($enemyCells);
 addXYCoordinates($playerCells);
 
 $enemyCells.on('click', playerClickFire);
-
-// Placeholder for demo and testing
 $playerCells.on('click', enemyClickFire);
-
 $restart.on('click', () => location.reload());
 
-function playerClickFire() {
-    if (!gameOver && turn % 2 === 0) {
-        if (this.shotAt) {
-            $message1.removeAttr('style');
-            $message1.text("Select a an open square!");
-            $message2.removeAttr('style');
-            $message2.text("You can't fire at the same square twice.");
-        } else {
-            this.shotAt = true;
-            turn++;
-            $message1.text(`Firing at ${this.yx}...`);
-            $message1.css({fontSize: '26px'});
-            if (this.occupied) {
-                $(this).text('X');
-                $(this).css({color: '#922', backgroundColor: '#222'});
-                $message2.text('HIT!');
-                $message2.css({fontSize: '60px', color: '#922'});
-                this.shipHere.takeHit();
-                console.log(`hit ${this.shipHere.className}`);
-            } else {
-                $(this).text('/');
-                $(this).css({backgroundColor: '#aaf'});
-                $message2.text('MISS');
-                $message2.css({fontSize: '60px', color: '#88d'});
-                console.log('miss');
-            }
-        }
-        console.log(`Cell coordinates: ${this.ySpaceX}`);
-        enemyTimeout = setTimeout(enemyTimeFire, 2000);
-    }
-}
-
-function enemyClickFire() {
-    clearTimeout(enemyTimeout);
-    if (!gameOver && turn % 2) {
-        if (this.shotAt) {
-            $message1.removeAttr('style');
-            $message1.text("Select a an open square!");
-            $message2.removeAttr('style');
-            $message2.text("You can't fire at the same square twice.");
-        } else {
-            this.shotAt = true;
-            turn++;
-            $message1.text(`Enemy fires at ${this.yx}`);
-            $message1.css({fontSize: '26px'});
-            if (this.occupied) {
-                $(this).text('X');
-                $(this).css({color: '#922', backgroundColor: '#222'});
-                $message2.text('HIT!');
-                $message2.css({fontSize: '60px', color: '#922'});
-                this.shipHere.takeHit();
-                console.log(`hit ${this.shipHere.className}`);
-            } else {
-                $(this).text('/');
-                $(this).css({backgroundColor: '#aaf'});
-                $message2.text('MISS');
-                $message2.css({fontSize: '60px', color: '#88d'});
-                console.log('miss');
-            }
-        }
-        console.log(`Cell coordinates: ${this.ySpaceX}`);
-    }
-}
-
-function enemyTimeFire() {
-    if (!gameOver) {
-        let targetCellIndices = [];
-        $playerCells.each(function(index) {
-            if (!this.shotAt) {
-                targetCellIndices.push(index);
-            }
-        });
-        let randomIndex = targetCellIndices[Math.floor(Math.random() * targetCellIndices.length)];
-        $playerCells[randomIndex].click();
-        console.log(`ENEMY FIRES AT CELL ${$playerCells[randomIndex].yx}`);
-    }
-}
 
 class Ship {
     constructor(side, className, displayName, cellLength, direction, cellsOccupied) {
@@ -202,10 +119,6 @@ class Ship {
     }
 }
 
-function renderSunkShipKey(ship) {
-    sides[ship.side].shipsKey.find(`.${ship.className}`).css({textDecoration: "line-through", color: "#511"});
-}
-
 // Placeholder simple static ships for now
 
 let playerCarrier = new Ship (0, 'carrier', 'Aircraft Carrier', 5, 'vertical', [28, 38, 48, 58, 68]);
@@ -221,5 +134,88 @@ let enemySubmarine = new Ship (1, 'submarine', 'Submarine', 3, 'horizontal', [13
 let enemyPatrol = new Ship (1, 'patrol', 'Patrol Boat', 2, 'horizontal', [55, 56]);
 
 
+function playerClickFire() {
+    if (!gameOver && turn % 2 === 0) {
+        if (this.shotAt) {
+            $message1.removeAttr('style');
+            $message1.text("Select a an open square!");
+            $message2.removeAttr('style');
+            $message2.text("You can't fire at the same square twice.");
+        } else {
+            this.shotAt = true;
+            turn++;
+            $message1.text(`Firing at ${this.yx}...`);
+            $message1.css({fontSize: '26px'});
+            if (this.occupied) {
+                $(this).text('X');
+                $(this).css({color: '#922', backgroundColor: '#222'});
+                $message2.text('HIT!');
+                $message2.css({fontSize: '60px', color: '#922'});
+                this.shipHere.takeHit();
+                console.log(`hit ${this.shipHere.className}`);
+            } else {
+                $(this).text('/');
+                $(this).css({backgroundColor: '#aaf'});
+                $message2.text('MISS');
+                $message2.css({fontSize: '60px', color: '#88d'});
+                console.log('miss');
+            }
+        }
+        console.log(`Cell coordinates: ${this.ySpaceX}`);
+        enemyTimeout = setTimeout(enemyTimeFire, 2000);
+    }
+}
+
+// Can click for the computer for presentation demo and testing
+
+function enemyClickFire() {
+    clearTimeout(enemyTimeout);
+    if (!gameOver && turn % 2) {
+        if (this.shotAt) {
+            $message1.removeAttr('style');
+            $message1.text("Select a an open square!");
+            $message2.removeAttr('style');
+            $message2.text("You can't fire at the same square twice.");
+        } else {
+            this.shotAt = true;
+            turn++;
+            $message1.text(`Enemy fires at ${this.yx}`);
+            $message1.css({fontSize: '26px'});
+            if (this.occupied) {
+                $(this).text('X');
+                $(this).css({color: '#922', backgroundColor: '#222'});
+                $message2.text('HIT!');
+                $message2.css({fontSize: '60px', color: '#922'});
+                this.shipHere.takeHit();
+                console.log(`hit ${this.shipHere.className}`);
+            } else {
+                $(this).text('/');
+                $(this).css({backgroundColor: '#aaf'});
+                $message2.text('MISS');
+                $message2.css({fontSize: '60px', color: '#88d'});
+                console.log('miss');
+            }
+        }
+        console.log(`Cell coordinates: ${this.ySpaceX}`);
+    }
+}
+
+function enemyTimeFire() {
+    if (!gameOver) {
+        let targetCellIndices = [];
+        $playerCells.each(function(index) {
+            if (!this.shotAt) {
+                targetCellIndices.push(index);
+            }
+        });
+        let randomIndex = targetCellIndices[Math.floor(Math.random() * targetCellIndices.length)];
+        $playerCells[randomIndex].click();
+        console.log(`ENEMY FIRES AT CELL ${$playerCells[randomIndex].yx}`);
+    }
+}
+
+function renderSunkShipKey(ship) {
+    sides[ship.side].shipsKey.find(`.${ship.className}`).css({textDecoration: "line-through", color: "#511"});
+}
 
 
