@@ -136,13 +136,10 @@ let enemyPatrol = new Ship (1, 'patrol', 'Patrol Boat', 2, 'horizontal', [55, 56
 
 function playerClickFire() {
     if (!gameOver && turn % 2 === 0) {
-        if (this.shotAt) {
-            $message1.removeAttr('style');
-            $message1.text("Select a an open square!");
-            $message2.removeAttr('style');
-            $message2.text("You can't fire at the same square twice.");
+        if (this.firedAt) {
+            renderAlreadyFiredAt();
         } else {
-            this.shotAt = true;
+            this.firedAt = true;
             turn++;
             renderPlayerFire(this);
             if (this.occupied) {
@@ -159,18 +156,29 @@ function playerClickFire() {
     }
 }
 
+function enemyTimeFire() {
+    if (!gameOver) {
+        let targetCellIndices = [];
+        $playerCells.each(function(index) {
+            if (!this.firedAt) {
+                targetCellIndices.push(index);
+            }
+        });
+        let randomIndex = targetCellIndices[Math.floor(Math.random() * targetCellIndices.length)];
+        $playerCells[randomIndex].click();
+        console.log(`ENEMY FIRES AT CELL ${$playerCells[randomIndex].yx}`);
+    }
+}
+
 // Can click for the computer for presentation demo and testing
 
 function enemyClickFire() {
     clearTimeout(enemyTimeout);
     if (!gameOver && turn % 2) {
-        if (this.shotAt) {
-            $message1.removeAttr('style');
-            $message1.text("Select a an open square!");
-            $message2.removeAttr('style');
-            $message2.text("You can't fire at the same square twice.");
+        if (this.firedAt) {
+            renderAlreadyFiredAt();
         } else {
-            this.shotAt = true;
+            this.firedAt = true;
             turn++;
             renderEnemyFire(this);
             if (this.occupied) {
@@ -183,20 +191,6 @@ function enemyClickFire() {
             }
         }
         console.log(`Cell coordinates: ${this.ySpaceX}`);
-    }
-}
-
-function enemyTimeFire() {
-    if (!gameOver) {
-        let targetCellIndices = [];
-        $playerCells.each(function(index) {
-            if (!this.shotAt) {
-                targetCellIndices.push(index);
-            }
-        });
-        let randomIndex = targetCellIndices[Math.floor(Math.random() * targetCellIndices.length)];
-        $playerCells[randomIndex].click();
-        console.log(`ENEMY FIRES AT CELL ${$playerCells[randomIndex].yx}`);
     }
 }
 
@@ -228,6 +222,13 @@ function renderMiss(cell) {
 
 function renderSunkShipKey(ship) {
     sides[ship.side].shipsKey.find(`.${ship.className}`).css({textDecoration: "line-through", color: "#511"});
+}
+
+function renderAlreadyFiredAt() {
+    $message1.removeAttr('style');
+    $message1.text("Select a an open square!");
+    $message2.removeAttr('style');
+    $message2.text("You can't fire at the same square twice.");
 }
 
 
