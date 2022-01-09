@@ -144,20 +144,13 @@ function playerClickFire() {
         } else {
             this.shotAt = true;
             turn++;
-            $message1.text(`Firing at ${this.yx}...`);
-            $message1.css({fontSize: '26px'});
+            renderPlayerFire(this);
             if (this.occupied) {
-                $(this).text('X');
-                $(this).css({color: '#922', backgroundColor: '#222'});
-                $message2.text('HIT!');
-                $message2.css({fontSize: '60px', color: '#922'});
+                renderHit(this);
                 this.shipHere.takeHit();
                 console.log(`hit ${this.shipHere.className}`);
             } else {
-                $(this).text('/');
-                $(this).css({backgroundColor: '#aaf'});
-                $message2.text('MISS');
-                $message2.css({fontSize: '60px', color: '#88d'});
+                renderMiss(this);
                 console.log('miss');
             }
             enemyTimeout = setTimeout(enemyTimeFire, 2000);
@@ -179,20 +172,13 @@ function enemyClickFire() {
         } else {
             this.shotAt = true;
             turn++;
-            $message1.text(`Enemy fires at ${this.yx}`);
-            $message1.css({fontSize: '26px'});
+            renderEnemyFire(this);
             if (this.occupied) {
-                $(this).text('X');
-                $(this).css({color: '#922', backgroundColor: '#222'});
-                $message2.text('HIT!');
-                $message2.css({fontSize: '60px', color: '#922'});
+                renderHit(this);
                 this.shipHere.takeHit();
                 console.log(`hit ${this.shipHere.className}`);
             } else {
-                $(this).text('/');
-                $(this).css({backgroundColor: '#aaf'});
-                $message2.text('MISS');
-                $message2.css({fontSize: '60px', color: '#88d'});
+                renderMiss(this);
                 console.log('miss');
             }
         }
@@ -215,6 +201,30 @@ function enemyTimeFire() {
 }
 
 // Display rendering functions
+
+function renderPlayerFire(cell) {
+    $message1.text(`Firing at ${cell.yx}...`);
+    $message1.css({fontSize: '26px'});
+}
+
+function renderEnemyFire(cell) {
+    $message1.text(`Enemy fires at ${cell.yx}`);
+    $message1.css({fontSize: '26px'});
+}
+
+function renderHit(cell) {
+    $(cell).text('X');
+    $(cell).css({color: '#922', backgroundColor: '#222'});
+    $message2.text('HIT!');
+    $message2.css({fontSize: '60px', color: '#922'});
+}
+
+function renderMiss(cell) {
+    $(cell).text('/');
+    $(cell).css({backgroundColor: '#aaf'});
+    $message2.text('MISS');
+    $message2.css({fontSize: '60px', color: '#88d'});
+}
 
 function renderSunkShipKey(ship) {
     sides[ship.side].shipsKey.find(`.${ship.className}`).css({textDecoration: "line-through", color: "#511"});
