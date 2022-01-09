@@ -5,21 +5,43 @@ body {
 }
 
 header {
+    display: flex;
+    justify-content: space-evenly;
+    align-items:flex-end;
     text-align: center;
     background: radial-gradient(ellipse farthest-side at bottom, rgba(0, 0, 0, 1), rgba(0, 0, 40, 0));
 }
 
 h1 {
-    font-size: 50px;
-    margin: 15px auto;
+    font-size: 52px;
+    margin: 10px;
     padding-bottom: 10px;
     color: #aab9;
-    transform: perspective(100px) rotateX(15deg) scaleX(1.2) translateY(5px);
+    transform: perspective(100px) rotateX(16deg) scaleX(1.2) translateY(10px);
+}
+
+.header-img {
+    max-width: 200px;
+    max-height: 80px;
+    width: auto;
+    height: auto;
+    padding-bottom: 10px;
+    opacity: 0.6;
+}
+
+.header-img-1 {
+    transform: rotateY(180deg);
+    margin-left: 120px;
+}
+
+.header-img-2 {
+    margin-right: 120px;
 }
 
 .main-game-section {
     display: flex;
     justify-content: space-evenly;
+    margin-top: 10px;
 }
 
 .player-container, .enemy-container {
@@ -155,7 +177,6 @@ h1 {
 }
 
 #restart {
-    /* min-width: fit-content; */
     padding: 10px 20px;
     margin: 0 10px;
     border: 5px solid #aab;
