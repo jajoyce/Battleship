@@ -96,24 +96,12 @@ class Ship {
         if (this.hitsTaken === this.cellLength) {
             this.sunk = true;
             sides[this.side].shipsLeft--;
-            $message3.css({fontSize: '26px'});
-            if (this.side) {
-                $message3.text(`You sank the Enemy's ${this.displayName}!`);
-            } else {
-                $message3.text(`The Enemy sank your ${this.displayName}!`);
-            }
-            renderSunkShipKey(this);
+            renderSunkShip(this);
             console.log(`SANK ${this.className}`);
             if (!sides[this.side].shipsLeft) {
                 gameOver = true;
-                $message1.css({fontSize: "30px"});
-                if (this.side) {
-                    $message1.text('GAME OVER! YOU WIN!');
-                    console.log('GAME OVER, YOU WIN!');
-                } else {
-                    $message1.text('GAME OVER! ENEMY WINS!');
-                    console.log('GAME OVER, ENEMY WINS!');
-                }
+                renderGameOver(this.side);
+                console.log(`GAME OVER. ${sides[this.side].name} lost.`)
             }
         }
     }
@@ -220,10 +208,6 @@ function renderMiss(cell) {
     $message2.css({fontSize: '60px', color: '#88d'});
 }
 
-function renderSunkShipKey(ship) {
-    sides[ship.side].shipsKey.find(`.${ship.className}`).css({textDecoration: "line-through", color: "#511"});
-}
-
 function renderAlreadyFiredAt() {
     $message1.removeAttr('style');
     $message1.text("Select a an open square!");
@@ -231,4 +215,22 @@ function renderAlreadyFiredAt() {
     $message2.text("You can't fire at the same square twice.");
 }
 
+function renderSunkShip(ship) {
+    sides[ship.side].shipsKey.find(`.${ship.className}`).css({textDecoration: "line-through", color: "#511"});
+    $message3.css({fontSize: '26px'});
+    if (ship.side) {
+        $message3.text(`You sank the Enemy's ${ship.displayName}!`);
+    } else {
+        $message3.text(`The Enemy sank your ${ship.displayName}!`);
+    }
+}    
+
+function renderGameOver(losingSide) {
+    $message1.css({fontSize: "30px"});
+    if (losingSide) {
+        $message1.text('GAME OVER! YOU WIN!');
+    } else {
+        $message1.text('GAME OVER! ENEMY WINS!');
+    }
+}
 
