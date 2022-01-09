@@ -160,9 +160,9 @@ function playerClickFire() {
                 $message2.css({fontSize: '60px', color: '#88d'});
                 console.log('miss');
             }
+            enemyTimeout = setTimeout(enemyTimeFire, 2000);
         }
         console.log(`Cell coordinates: ${this.ySpaceX}`);
-        enemyTimeout = setTimeout(enemyTimeFire, 2000);
     }
 }
 
@@ -213,6 +213,8 @@ function enemyTimeFire() {
         console.log(`ENEMY FIRES AT CELL ${$playerCells[randomIndex].yx}`);
     }
 }
+
+// Display rendering functions
 
 function renderSunkShipKey(ship) {
     sides[ship.side].shipsKey.find(`.${ship.className}`).css({textDecoration: "line-through", color: "#511"});
