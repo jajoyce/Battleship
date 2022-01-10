@@ -45,6 +45,7 @@ More features I hope to add soon:
 * The ability to choose your own ship positions on your grid 
 * A "smarter" computer opponent 
 * Visual improvements, better message display functions and animations, etc. 
+* Add function to start new game within app (MVP just reloading page for now) 
 
 
 ## Sources and References

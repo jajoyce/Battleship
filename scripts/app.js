@@ -74,6 +74,8 @@ addXYCoordinates($playerCells);
 $enemyCells.on('click', playerClickFire);
 $playerCells.on('click', enemyClickFire);
 $restart.on('click', () => location.reload());
+// To-do: add actual game reset function, just reloading for MVP for now 
+
 
 // Ship class 
 
