@@ -140,6 +140,10 @@ h1 {
     font-weight: bold;
 }
 
+#message-3 {
+    display: none;
+}
+
 .below-gameboard {
     display: flex;
     justify-content: space-evenly;
