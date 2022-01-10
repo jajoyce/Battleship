@@ -106,18 +106,15 @@ class Ship {
     takeHit() {
         this.hitsTaken++;
         this.checkSunk();
-        console.log(`${this.className} takes hit, has taken ${this.hitsTaken} hits total.`);
     }
     checkSunk() {
         if (this.hitsTaken === this.cellLength) {
             this.sunk = true;
             sides[this.side].shipsLeft--;
             renderSunkShip(this);
-            console.log(`SANK ${this.className}`);
             if (!sides[this.side].shipsLeft) {
                 gameOver = true;
                 renderGameOver(this.side);
-                console.log(`GAME OVER. ${sides[this.side].name} lost.`)
             }
         }
     }
@@ -150,20 +147,16 @@ function playerClickFire() {
             if (this.occupied) {
                 this.shipHere.takeHit();
                 renderHit(this);
-                console.log(`>>>>>${this.shipHere.sunk}`);
                 if (this.shipHere.sunk) {
                     enemyTurnTimeout = setTimeout(enemyTimeFire, 5400);
                 } else {
                     enemyTurnTimeout = setTimeout(enemyTimeFire, 2400);
                 }
-                console.log(`hit ${this.shipHere.className}`);
             } else {
                 renderMiss(this);
                 enemyTurnTimeout = setTimeout(enemyTimeFire, 2400);
-                console.log('miss');
             }
         }
-        console.log(`Cell coordinates: ${this.ySpaceX}`);
     }
 }
 
@@ -177,7 +170,6 @@ function enemyTimeFire() {
         });
         let randomIndex = targetCellIndices[Math.floor(Math.random() * targetCellIndices.length)];
         $playerCells[randomIndex].click();
-        console.log(`ENEMY FIRES AT CELL ${$playerCells[randomIndex].yx}`);
     }
 }
 
@@ -196,14 +188,11 @@ function enemyClickFire() {
                 if (this.occupied) {
                     renderHit(this);
                     this.shipHere.takeHit();
-                    console.log(`hit ${this.shipHere.className}`);
                 } else {
                     renderMiss(this);
-                    console.log('miss');
                 }
             }, 1200);
         }
-        console.log(`Cell coordinates: ${this.ySpaceX}`);
     }
 }
 
