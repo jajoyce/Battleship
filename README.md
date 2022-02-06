@@ -10,6 +10,12 @@ Each player's fleet contains multiple ships of different sizes, arranged on a gr
 
 ## Screenshots 
 
+![Screenshot 1](images/screenshot-1.png) 
+![Screenshot 2](images/screenshot-2.png) 
+![Screenshot 3](images/screenshot-3.png) 
+![Screenshot 4](images/screenshot-4.png) 
+![Screenshot 5](images/screenshot-5.png) 
+
 ## Technologies Used 
 
 JavaScript, jQuery, CSS, HTML 
@@ -39,6 +45,7 @@ More features I hope to add soon:
 * The ability to choose your own ship positions on your grid 
 * A "smarter" computer opponent 
 * Visual improvements, better message display functions and animations, etc. 
+* Add function to start new game within app (MVP just reloading page for now) 
 
 
 ## Sources and References

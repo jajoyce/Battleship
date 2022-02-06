@@ -1,3 +1,5 @@
+// jQuery DOM constants 
+
 const $playerCells = $('.player-cell');
 const $enemyCells = $('.enemy-cell');
 const $playerShipsKey = $('.player-ships');
@@ -7,13 +9,24 @@ const $message2 = $('#message-2');
 const $message3 = $('#message-3');
 const $restart = $('#restart');
 
+// Global game vairables 
+
 let gameOver = false;
 let turn = 0;
 let sides = [
     {name: "Player", shipsLeft: 5, shipsKey: $playerShipsKey}, 
     {name: "Enemy", shipsLeft: 5, shipsKey: $enemyShipsKey}
 ];
-let enemyTimeout;
+
+// Gameplay timeouts 
+
+let enemyTurnTimeout;
+let enemyHitMissTimeout;
+let sunkAfterHitTimeout;
+let sunkHighlightKeyTimeout;
+let gameOverTimeout;
+
+// Add X Y coordinates to cells 
 
 function addXYCoordinates(cells) {
     for (let i = 0; i < cells.length; i++) {
@@ -56,10 +69,15 @@ function addXYCoordinates(cells) {
 addXYCoordinates($enemyCells);
 addXYCoordinates($playerCells);
 
+// Event listeners 
+
 $enemyCells.on('click', playerClickFire);
 $playerCells.on('click', enemyClickFire);
 $restart.on('click', () => location.reload());
+// To-do: add actual game reset function, just reloading for MVP for now 
 
+
+// Ship class 
 
 class Ship {
     constructor(side, className, displayName, cellLength, direction, cellsOccupied) {
@@ -90,36 +108,21 @@ class Ship {
     takeHit() {
         this.hitsTaken++;
         this.checkSunk();
-        console.log(`${this.className} takes hit, has taken ${this.hitsTaken} hits total.`);
     }
     checkSunk() {
         if (this.hitsTaken === this.cellLength) {
             this.sunk = true;
             sides[this.side].shipsLeft--;
-            $message3.css({fontSize: '26px'});
-            if (this.side) {
-                $message3.text(`You sank the Enemy's ${this.displayName}!`);
-            } else {
-                $message3.text(`The Enemy sank your ${this.displayName}!`);
-            }
-            renderSunkShipKey(this);
-            console.log(`SANK ${this.className}`);
+            renderSunkShip(this);
             if (!sides[this.side].shipsLeft) {
                 gameOver = true;
-                $message1.css({fontSize: "30px"});
-                if (this.side) {
-                    $message1.text('GAME OVER! YOU WIN!');
-                    console.log('GAME OVER, YOU WIN!');
-                } else {
-                    $message1.text('GAME OVER! ENEMY WINS!');
-                    console.log('GAME OVER, ENEMY WINS!');
-                }
+                renderGameOver(this.side);
             }
         }
     }
 }
 
-// Placeholder simple static ships for now
+// Placeholder simple static ships for now 
 
 let playerCarrier = new Ship (0, 'carrier', 'Aircraft Carrier', 5, 'vertical', [28, 38, 48, 58, 68]);
 let playerBattleship = new Ship (0, 'battleship', 'Battleship', 4, 'horizontal', [81, 82, 83, 84]);
@@ -133,70 +136,29 @@ let enemyDestroyer = new Ship (1, 'destroyer', 'Destroyer', 3, 'vertical', [32, 
 let enemySubmarine = new Ship (1, 'submarine', 'Submarine', 3, 'horizontal', [13, 14, 15]);
 let enemyPatrol = new Ship (1, 'patrol', 'Patrol Boat', 2, 'horizontal', [55, 56]);
 
+// Functions for event handling and gameplay control 
 
 function playerClickFire() {
     if (!gameOver && turn % 2 === 0) {
-        if (this.shotAt) {
-            $message1.removeAttr('style');
-            $message1.text("Select a an open square!");
-            $message2.removeAttr('style');
-            $message2.text("You can't fire at the same square twice.");
+        if (this.firedAt) {
+            renderAlreadyFiredAt();
         } else {
-            this.shotAt = true;
+            this.firedAt = true;
             turn++;
-            $message1.text(`Firing at ${this.yx}...`);
-            $message1.css({fontSize: '26px'});
+            renderPlayerFire(this);
             if (this.occupied) {
-                $(this).text('X');
-                $(this).css({color: '#922', backgroundColor: '#222'});
-                $message2.text('HIT!');
-                $message2.css({fontSize: '60px', color: '#922'});
                 this.shipHere.takeHit();
-                console.log(`hit ${this.shipHere.className}`);
+                renderHit(this);
+                if (this.shipHere.sunk) {
+                    enemyTurnTimeout = setTimeout(enemyTimeFire, 5400);
+                } else {
+                    enemyTurnTimeout = setTimeout(enemyTimeFire, 2400);
+                }
             } else {
-                $(this).text('/');
-                $(this).css({backgroundColor: '#aaf'});
-                $message2.text('MISS');
-                $message2.css({fontSize: '60px', color: '#88d'});
-                console.log('miss');
-            }
-            enemyTimeout = setTimeout(enemyTimeFire, 2000);
-        }
-        console.log(`Cell coordinates: ${this.ySpaceX}`);
-    }
-}
-
-// Can click for the computer for presentation demo and testing
-
-function enemyClickFire() {
-    clearTimeout(enemyTimeout);
-    if (!gameOver && turn % 2) {
-        if (this.shotAt) {
-            $message1.removeAttr('style');
-            $message1.text("Select a an open square!");
-            $message2.removeAttr('style');
-            $message2.text("You can't fire at the same square twice.");
-        } else {
-            this.shotAt = true;
-            turn++;
-            $message1.text(`Enemy fires at ${this.yx}`);
-            $message1.css({fontSize: '26px'});
-            if (this.occupied) {
-                $(this).text('X');
-                $(this).css({color: '#922', backgroundColor: '#222'});
-                $message2.text('HIT!');
-                $message2.css({fontSize: '60px', color: '#922'});
-                this.shipHere.takeHit();
-                console.log(`hit ${this.shipHere.className}`);
-            } else {
-                $(this).text('/');
-                $(this).css({backgroundColor: '#aaf'});
-                $message2.text('MISS');
-                $message2.css({fontSize: '60px', color: '#88d'});
-                console.log('miss');
+                renderMiss(this);
+                enemyTurnTimeout = setTimeout(enemyTimeFire, 2400);
             }
         }
-        console.log(`Cell coordinates: ${this.ySpaceX}`);
     }
 }
 
@@ -204,20 +166,136 @@ function enemyTimeFire() {
     if (!gameOver) {
         let targetCellIndices = [];
         $playerCells.each(function(index) {
-            if (!this.shotAt) {
+            if (!this.firedAt) {
                 targetCellIndices.push(index);
             }
         });
         let randomIndex = targetCellIndices[Math.floor(Math.random() * targetCellIndices.length)];
         $playerCells[randomIndex].click();
-        console.log(`ENEMY FIRES AT CELL ${$playerCells[randomIndex].yx}`);
+    }
+}
+
+// Can click for the computer for presentation demo and testing
+
+function enemyClickFire() {
+    clearTimeout(enemyTurnTimeout);
+    if (!gameOver && turn % 2) {
+        if (this.firedAt) {
+            renderAlreadyFiredAt();
+        } else {
+            this.firedAt = true;
+            turn++;
+            renderEnemyFire(this);
+            enemyHitMissTimeout = setTimeout(() => {
+                if (this.occupied) {
+                    renderHit(this);
+                    this.shipHere.takeHit();
+                } else {
+                    renderMiss(this);
+                }
+            }, 1200);
+        }
     }
 }
 
 // Display rendering functions
 
-function renderSunkShipKey(ship) {
-    sides[ship.side].shipsKey.find(`.${ship.className}`).css({textDecoration: "line-through", color: "#511"});
+function renderPlayerFire(cell) {
+    $message1.text(`Firing at ${cell.yx}...`);
+    $message1.css({fontSize: '26px'});
+    $message2.css({display: 'none'});
+    $message3.css({display: 'none'});
 }
 
+function renderEnemyFire(cell) {
+    $message1.text('Enemy firing...');
+    $message1.css({fontSize: '26px'});
+    $message2.css({display: 'none'});
+    $message3.css({display: 'none'});
+}
+
+function renderHit(cell) {
+    $(cell).text('X');
+    $(cell).css({
+        color: '#922', 
+        zIndex: 1,
+        fontSize: '200px', 
+    });
+    $(cell).animate({fontSize: '28px'}, 400, function () {
+        $(cell).css({
+            zIndex: 0,
+            backgroundColor: '#222', 
+        });
+        if (turn % 2 === 0) {
+            $message1.text(`Enemy fires at ${cell.yx}`);
+        }
+        $message2.text('HIT!');
+        $message2.css({fontSize: '60px', color: '#922'});
+        $message2.fadeIn();
+    });
+}
+
+function renderMiss(cell) {
+    $(cell).text('/');
+    $(cell).css({
+        zIndex: 1,
+        fontSize: '200px', 
+    });
+    $(cell).animate({fontSize: '28px'}, 400, function () {
+        $(cell).css({
+            zIndex: 0,
+            backgroundColor: '#aaf', 
+        });
+        if (turn % 2 === 0) {
+            $message1.text(`Enemy fires at ${cell.yx}`);
+        }
+        $message2.text('MISS');
+        $message2.css({fontSize: '60px', color: '#88d'});
+        $message2.fadeIn();
+    });
+}
+
+function renderAlreadyFiredAt() {
+    $message1.removeAttr('style');
+    $message1.text('Select an open square!');
+    $message2.removeAttr('style');
+    $message2.text("You can't fire at the same square twice.");
+    $message3.css({display: 'none'});
+}
+
+function renderSunkShip(ship) {
+    let shipInKeyList = sides[ship.side].shipsKey.find(`.${ship.className}`);
+    sunkAfterHitTimeout = setTimeout(() => {
+        shipInKeyList.css({
+            textDecoration: 'line-through',
+            color: '#c33', 
+            fontWeight: 'bold', 
+        });
+        sunkHighlightKeyTimeout = setTimeout(() => {
+            shipInKeyList.css({
+                color: '#611', 
+                fontWeight: '',
+            });
+            $message3.css({fontSize: '26px'});
+            if (ship.side) {
+                $message3.text(`You sank the Enemy's ${ship.displayName}!`);
+            } else {
+                $message3.text(`The Enemy sank your ${ship.displayName}!`);
+            }
+            $message3.fadeIn();
+        }, 1000);
+    }, 400); 
+}    
+
+function renderGameOver(losingSide) {
+    gameOverTimeout = setTimeout(() => {
+        $message1.css({display: 'none', fontSize: '30px'});
+        if (losingSide) {
+            $message1.text('GAME OVER! YOU WIN!');
+        } else {
+            $message1.text('GAME OVER! ENEMY WINS!');
+        }
+        $message1.fadeIn();
+    }, 1400);
+}
 
