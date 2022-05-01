@@ -66,15 +66,35 @@ function addXYCoordinates(cells) {
   }
 }
 
-addXYCoordinates($enemyCells);
 addXYCoordinates($playerCells);
+addXYCoordinates($enemyCells);
 
 // Event listeners
 
 $enemyCells.on("click", playerClickFire);
 $playerCells.on("click", enemyClickFire);
 $restart.on("click", () => location.reload());
-// To-do: add actual game reset function, just reloading for MVP for now
+// TO DO: add actual game reset function, just reloading for MVP for now
+// $restart.on("click", () => restart());
+
+function restart() {
+    gameOver = false;
+    turn = 0;
+
+    clearTimeout(enemyTurnTimeout);
+    clearTimeout(enemyHitMissTimeout);
+    clearTimeout(sunkAfterHitTimeout);
+    clearTimeout(sunkHighlightKeyTimeout);
+    clearTimeout(gameOverTimeout);
+
+    // TO DO: fix and finish this function later
+    for (i=0; i < 100; i++) {
+        $playerCells[i].firedAt = false;
+        $playerCells[i].removeAttr("style");
+        $enemyCells[i].firedAt = false;
+        $enemyCells[i].removeAttr("style");
+    }
+}
 
 // Ship class
 
@@ -129,6 +149,7 @@ class Ship {
 }
 
 // Placeholder simple static ships for now
+// Ship class constructor: (side, className, displayName, cellLength, direction, cellsOccupied)
 
 let playerCarrier = new Ship(
   0,
